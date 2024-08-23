@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dominant Colors</title>
+    <style>
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh; 
+        }
+        .image-container {
+            width: 80%; 
+            max-height: 80%; 
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden; 
+            margin-bottom: 20px; 
+        }
+        .uploaded-image {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain; 
+        }
+        .color-swatch {
+            width: 20px;
+            height: 20px;
+            margin-right: 10px;
+            display: inline-block;
+            border: 1px solid #000;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Determining The Most Common Colors</h1>
+
+        <form method='POST' enctype='multipart/form-data'>
+            {{ form.hidden_tag() }}
+            {{ form.file() }}
+            {{ form.submit() }}
+        </form>
+
+        {% if filename %}
+        <h2>Uploaded File: {{ filename }}</h2>
+        <div class="image-container">
+            <img src="{{ url_for('static', filename='images/' + filename) }}" alt="Uploaded Image" class="uploaded-image">
+        </div>
+
+        <h2>Most Common Colors:</h2>
+        <ul>
+            {% for color in common_colors %}
+            <div class="color-swatch" style="background-color: {{ color }}"></div>
+            <span>{{ color }}</span><br> <!-- Display hex code alongside the color swatch -->
+            {% endfor %}
+        </ul>
+        {% endif %}
+    </div>
+</body>
+</html>
